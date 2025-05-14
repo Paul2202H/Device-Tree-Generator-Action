@@ -55,15 +55,15 @@ jobs:
     - name: Downloading .img file
       run: |
         wget ${{ github.event.inputs.DEVICE_IMG }}
-        if [ -f ./recovery.img ]; then
-            echo "RECOVERY_TYPE=recovery" >> $GITHUB_ENV
-            echo "recovery.img file found!"
+        if [ -f ./vendor_boot.img ]; then
+            echo "RECOVERY_TYPE=vendor_boot" >> $GITHUB_ENV
+            echo "vendor_boot.img file found!"
         elif [ -f ./boot.img ]; then
             echo "RECOVERY_TYPE=boot" >> $GITHUB_ENV
             echo "boot.img file found!"
-        elif [ -f ./vendor_boot.img ]; then
-            echo "RECOVERY_TYPE=vendor_boot" >> $GITHUB_ENV
-            echo "vendor_boot.img file found!"
+        elif [ -f ./recovery.img ]; then
+            echo "RECOVERY_TYPE=recovery" >> $GITHUB_ENV
+            echo "recovery.img file found!"
         else
             echo "No Recovery file found!"
             cd Exit
