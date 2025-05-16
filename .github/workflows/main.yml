@@ -16,10 +16,10 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Download magiskboot binary (confirmed working)
-      run: |
-        curl -L -o magiskboot https://raw.githubusercontent.com/HuskyDG/magiskboot_static/master/magiskboot-linux-x86_64
-        chmod +x magiskboot
+    - name: Download magiskboot binary (official release)
+    run: |
+     curl -L -o magiskboot https://github.com/topjohnwu/Magisk/releases/download/v25.2/magiskboot
+      chmod +x magiskboot
 
     - name: Download vendor_boot.img
       run: |
