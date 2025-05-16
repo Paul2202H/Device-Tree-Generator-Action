@@ -1,0 +1,42 @@
+name: Extract Vendor Boot
+
+on:
+  workflow_dispatch:
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.x'
+
+    - name: Download unpack_bootimg.py
+      run: |
+        mkdir tools
+        curl -o tools/unpack_bootimg.py https://raw.githubusercontent.com/android/tools_mkbootimg/main/unpack_bootimg.py
+
+    - name: Install required Python packages
+      run: |
+        python3 -m pip install --upgrade pip
+        python3 -m pip install intelhex  # unpack_bootimg may require it
+
+    - name: Make output directory
+      run: mkdir extracted
+
+    - name: Extract vendor_boot.img
+      run: |
+        python3 tools/unpack_bootimg.py \
+          --boot_img images/vendor_boot.img \
+          --out extracted
+
+    - name: Upload extracted contents
+      uses: actions/upload-artifact@v3
+      with:
+        name: vendor_boot_extracted
+        path: extracted/
