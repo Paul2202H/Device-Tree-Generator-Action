@@ -1,41 +1,38 @@
-name: Extract Vendor Boot
+name: Extract vendor_boot.img from URL
 
 on:
   workflow_dispatch:
+    inputs:
+      vendor_boot_url:
+        description: 'Direct URL to vendor_boot.img'
+        required: true
+        type: string
 
 jobs:
   extract:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repo
+    - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.x'
-
-    - name: Download unpack_bootimg.py
+    - name: Download magiskboot (precompiled)
       run: |
-        mkdir tools
-        curl -o tools/unpack_bootimg.py https://raw.githubusercontent.com/android/tools_mkbootimg/main/unpack_bootimg.py
+        curl -L -o magiskboot https://github.com/topjohnwu/magisk/releases/latest/download/magiskboot
+        chmod +x magiskboot
 
-    - name: Install required Python packages
+    - name: Download vendor_boot.img
       run: |
-        python3 -m pip install --upgrade pip
-        python3 -m pip install intelhex  # unpack_bootimg may require it
+        curl -L -o vendor_boot.img "${{ github.event.inputs.vendor_boot_url }}"
 
-    - name: Make output directory
-      run: mkdir extracted
-
-    - name: Extract vendor_boot.img
+    - name: Extract with magiskboot
       run: |
-        python3 tools/unpack_bootimg.py \
-          --boot_img images/vendor_boot.img \
-          --out extracted
+        mkdir extracted
+        ./magiskboot unpack vendor_boot.img
+        mv split_img extracted/ || echo "No split_img"
+        mv ramdisk extracted/ || echo "No ramdisk"
 
-    - name: Upload extracted contents
+    - name: Upload extracted files
       uses: actions/upload-artifact@v3
       with:
         name: vendor_boot_extracted
