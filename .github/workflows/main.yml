@@ -17,10 +17,10 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Download magiskboot binary (official release)
-    run: |
-     curl -L -o magiskboot https://github.com/topjohnwu/Magisk/releases/download/v25.2/magiskboot
-      chmod +x magiskboot
-
+     run: |
+       curl -L -o magiskboot https://github.com/topjohnwu/Magisk/releases/download/v25.2/magiskboot
+        chmod +x magiskboot
+ 
     - name: Download vendor_boot.img
       run: |
         curl -L -o vendor_boot.img "${{ github.event.inputs.vendor_boot_url }}"
