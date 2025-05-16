@@ -16,9 +16,9 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Download magiskboot (precompiled)
+    - name: Download magiskboot (community prebuilt)
       run: |
-        curl -L -o magiskboot https://github.com/topjohnwu/magisk/releases/latest/download/magiskboot
+        curl -L -o magiskboot https://github.com/HuskyDG/magiskboot_static/raw/master/magiskboot-linux
         chmod +x magiskboot
 
     - name: Download vendor_boot.img
