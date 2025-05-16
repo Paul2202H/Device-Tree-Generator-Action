@@ -16,9 +16,9 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Download magiskboot (community prebuilt)
+    - name: Download magiskboot binary (confirmed working)
       run: |
-        curl -L -o magiskboot https://github.com/HuskyDG/magiskboot_static/raw/master/magiskboot-linux
+        curl -L -o magiskboot https://raw.githubusercontent.com/HuskyDG/magiskboot_static/master/magiskboot-linux-x86_64
         chmod +x magiskboot
 
     - name: Download vendor_boot.img
@@ -27,7 +27,7 @@ jobs:
 
     - name: Extract with magiskboot
       run: |
-        mkdir extracted
+        mkdir -p extracted
         ./magiskboot unpack vendor_boot.img
         mv split_img extracted/ || echo "No split_img"
         mv ramdisk extracted/ || echo "No ramdisk"
